@@ -70,7 +70,6 @@ public class MyDialog extends DialogFragment {
                 dismiss();
             }
         });
-
         return builder.create();
     }
 

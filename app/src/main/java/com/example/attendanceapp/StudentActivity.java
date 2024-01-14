@@ -45,7 +45,6 @@ public class StudentActivity extends AppCompatActivity {
         adapter = new StudentAdapter(this, studentItems);
         recyclerView.setAdapter(adapter);
 
-
     }
 
     private void setToolbar() {
@@ -62,8 +61,6 @@ public class StudentActivity extends AppCompatActivity {
         back.setOnClickListener(view -> onBackPressed());
         toolbar.inflateMenu(R.menu.student_menu);
         toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
-
-
     }
 
     private boolean onMenuItemClick(MenuItem menuItem) {
