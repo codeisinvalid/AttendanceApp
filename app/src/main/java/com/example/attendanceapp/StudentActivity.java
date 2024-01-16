@@ -44,6 +44,17 @@ public class StudentActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new StudentAdapter(this, studentItems);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(position -> changeStatus(position) );
+
+    }
+
+    private void changeStatus(int position) {
+        String status = studentItems.get(position).getStatus();
+        if (status.equals("P")) status = "A";
+        else status = "P";
+
+        studentItems.get(position).setStatus(status);
+        adapter.notifyItemChanged(position);
 
     }
 
@@ -78,7 +89,7 @@ public class StudentActivity extends AppCompatActivity {
 
     private void addStudent(String roll, String name) {
         studentItems.add(new StudentItem(roll, name));
-        adapter.notifyItemChanged(studentItems.size()-1);
+        adapter.notifyDataSetChanged();
     }
 
 }
