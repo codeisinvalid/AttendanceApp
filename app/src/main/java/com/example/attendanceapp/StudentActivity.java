@@ -14,8 +14,8 @@ import android.view.MenuItem;
 import android.view.ScaleGestureDetector;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import java.util.ArrayList;
+import android.util.Log;
 
 public class StudentActivity extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class StudentActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<StudentItem> studentItems = new ArrayList<>();
     private DbHelper dbHelper;
-    private  int cid;
+    private  long cid;
     private MyCalender calender;
     private TextView subtitle;
 
@@ -46,7 +46,7 @@ public class StudentActivity extends AppCompatActivity {
         className = intent.getStringExtra("className");
         subjectName = intent.getStringExtra("subjectName");
         position = intent.getIntExtra("position", -1);
-        cid = intent.getIntExtra("cid", -1);
+        cid = intent.getLongExtra("cid", -1);
 
 
         setToolbar();
@@ -66,6 +66,7 @@ public class StudentActivity extends AppCompatActivity {
     private void loadData() {
 
         Cursor cursor = dbHelper.getStudentTable(cid);
+        Log.i("1234567890", "loaddata: "+ cid);
         studentItems.clear();
         while (cursor.moveToNext()){
 
@@ -109,7 +110,7 @@ public class StudentActivity extends AppCompatActivity {
 //            if (status != "P"){
 //                status = "A";
 //            }
-            long value = dbHelper.addStatus(studentItem.getSid(), calender.getDate(), status);
+            long value = dbHelper.addStatus(studentItem.getSid(),cid, calender.getDate(), status);
             if(value ==-1){
                 dbHelper.updateStatus(studentItem.getSid(), calender.getDate(), status);
             }

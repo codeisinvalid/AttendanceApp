@@ -12,8 +12,7 @@ import android.os.Build;
 import androidx.annotation.Nullable;
 
 class DbHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 1;
-
+    private static final int VERSION = 2;
 
 
 //    CLASS TABLE
@@ -44,10 +43,10 @@ class DbHelper extends SQLiteOpenHelper {
             "CREATE TABLE "+ STUDENT_TABLE_NAME +
                     "( "+
                     S_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+
-                    C_ID + " INTEGER NOT NULL, " +
+                    C_ID + " LONG NOT NULL, " +
                     STUDENT_NAME_KEY + " TEXT NOT NULL, "+
                     STUDENT_ROLL_KEY + " INTEGER, "+
-                    " FOREIGN KEY ( " + C_ID+" ) REFERENCES "+ CLASS_TABLE_NAME + "("+C_ID+")"+
+                    " FOREIGN KEY ( " + C_ID +" ) REFERENCES " + CLASS_TABLE_NAME + "(" + C_ID + ")"+
                     ");";
     private static final String DROP_STUDENT_TABLE = "DROP TABLE IF EXISTS " + STUDENT_TABLE_NAME;
     private static final String SELECT_STUDENT_TABLE = "SELECT * FROM " + STUDENT_TABLE_NAME;
@@ -68,7 +67,8 @@ class DbHelper extends SQLiteOpenHelper {
                     DATE_KEY + " DATE NOT NULL, "+
                     STATUS_KEY + " TEXT NOT NULL, "+
                     " UNIQUE ("+ S_ID + "," + DATE_KEY+"),"+
-                    " FOREIGN KEY ("+ S_ID+") REFERENCES "+ STUDENT_TABLE_NAME+"( "+S_ID+")"+
+                    " FOREIGN KEY ("+ S_ID+") REFERENCES "+ STUDENT_TABLE_NAME+"( "+S_ID+"),"+
+                    " FOREIGN KEY ("+ C_ID+") REFERENCES "+ CLASS_TABLE_NAME+"( "+C_ID+")"+
                     ");";
     private static final String DROP_STATUS_TABLE = "DROP TABLE IF EXISTS "+ STATUS_TABLE_NAME;
     private static final String SELECT_STATUS_TABLE = "SELECT * FROM "+ STATUS_TABLE_NAME;
@@ -157,10 +157,11 @@ class DbHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(sid)});
     }
 
-    long addStatus(long sid, String date, String status){
+    long addStatus(long sid,long cid, String date, String status){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(S_ID, sid);
+        values.put(C_ID, cid);
         values.put(DATE_KEY, date);
         values.put(STATUS_KEY, status);
 
