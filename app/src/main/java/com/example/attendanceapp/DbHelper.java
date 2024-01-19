@@ -43,7 +43,7 @@ class DbHelper extends SQLiteOpenHelper {
             "CREATE TABLE "+ STUDENT_TABLE_NAME +
                     "( "+
                     S_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+
-                    C_ID + " LONG NOT NULL, " +
+                    C_ID + " INTEGER NOT NULL, " +
                     STUDENT_NAME_KEY + " TEXT NOT NULL, "+
                     STUDENT_ROLL_KEY + " INTEGER, "+
                     " FOREIGN KEY ( " + C_ID +" ) REFERENCES " + CLASS_TABLE_NAME + "(" + C_ID + ")"+
@@ -54,16 +54,17 @@ class DbHelper extends SQLiteOpenHelper {
 
 
 //    STATUS TABLE
-    private static final String STATUS_TABLE_NAME = "STATUS_TABLE";
-    private static final String STATUS_ID = "_STATUS_ID";
-    private static final String DATE_KEY = "STATUS_DATE";
-    private static final String STATUS_KEY = "STATUS";
+    public static final String STATUS_TABLE_NAME = "STATUS_TABLE";
+    public static final String STATUS_ID = "_STATUS_ID";
+    public static final String DATE_KEY = "STATUS_DATE";
+    public static final String STATUS_KEY = "STATUS";
 
     private static final String CREATE_STATUS_TABLE =
             "CREATE TABLE " + STATUS_TABLE_NAME +
                     "("+
                     STATUS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+
                     S_ID + " INTEGER NOT NULL, "+
+                    C_ID + " INTEGER NOT NULL, "+
                     DATE_KEY + " DATE NOT NULL, "+
                     STATUS_KEY + " TEXT NOT NULL, "+
                     " UNIQUE ("+ S_ID + "," + DATE_KEY+"),"+
@@ -114,7 +115,6 @@ class DbHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.delete(CLASS_TABLE_NAME,
                 C_ID+"=?",new String[]{String.valueOf(cid)});
     }
-
 
     long updateClass(long cid, String className, String subjectName){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -188,5 +188,11 @@ class DbHelper extends SQLiteOpenHelper {
             status = cursor.getString(cursor.getColumnIndex(STATUS_KEY));
         }
         return status;
+    }
+
+    Cursor getDistinctMonths(long cid){
+        SQLiteDatabase database = this.getReadableDatabase();
+        return database.query(STATUS_TABLE_NAME, new String[]{DATE_KEY}, C_ID+"="+cid, null, "substr("+DATE_KEY+" ,4,7)", null, null);
+
     }
 }

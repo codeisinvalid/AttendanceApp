@@ -66,7 +66,7 @@ public class StudentActivity extends AppCompatActivity {
     private void loadData() {
 
         Cursor cursor = dbHelper.getStudentTable(cid);
-        Log.i("1234567890", "loaddata: "+ cid);
+//        Log.i("1234567890", "loaddata: "+ cid);
         studentItems.clear();
         while (cursor.moveToNext()){
 
@@ -79,6 +79,7 @@ public class StudentActivity extends AppCompatActivity {
     }
 
     private void changeStatus(int position) {
+//        Log.i("1234567890", String.valueOf(studentItems.get(position).getSid()));
         String status = studentItems.get(position).getStatus();
         if (status.equals("P")) status = "A";
         else status = "P";
@@ -129,13 +130,42 @@ public class StudentActivity extends AppCompatActivity {
     }
 
     private boolean onMenuItemClick(MenuItem menuItem) {
+
         if (menuItem.getItemId()==R.id.add_student) {
             showAddStudentDialog();
         }
+
         else if (menuItem.getItemId()==R.id.show_Calender) {
             showCalender();
         }
+
+        else if (menuItem.getItemId()==R.id.show_attendance_sheet) {
+            openSheetList();
+        }
         return true;
+    }
+
+    private void openSheetList() {
+
+        long[] idArray = new long[studentItems.size()];
+        String[] nameArray = new String[studentItems.size()];
+        int[] rollArray = new int[studentItems.size()];
+
+        for (int i = 0; i<idArray.length; i++)
+            idArray[i] = studentItems.get(i).getSid();
+
+        for (int i = 0; i<rollArray.length; i++)
+            rollArray[i] = studentItems.get(i).getRoll();
+
+        for (int i = 0; i<nameArray.length;i++)
+            nameArray[i]=studentItems.get(i).getName();
+
+        Intent intent = new Intent(this, SheetListActivity.class);
+        intent.putExtra("cid", cid);
+        intent.putExtra("idArray", idArray);
+        intent.putExtra("rollArray", rollArray);
+        intent.putExtra("nameArray", nameArray);
+        startActivity(intent);
     }
 
     private void showCalender() {
