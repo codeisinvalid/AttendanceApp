@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.ScaleGestureDetector;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.ArrayList;

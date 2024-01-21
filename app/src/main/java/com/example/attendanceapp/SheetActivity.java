@@ -31,7 +31,6 @@ public class SheetActivity extends AppCompatActivity {
         int DAY_IN_MONTH = getDayInMonth(month);
 
 //        row setup
-
         int rowSize = idArray.length+1;
         TableRow[] rows = new TableRow[rowSize];
         TextView[] roll_tvs = new TextView[rowSize];
@@ -55,7 +54,6 @@ public class SheetActivity extends AppCompatActivity {
         for (int i = 1; i <= DAY_IN_MONTH; i++) {
             status_tvs[0][i].setText(String.valueOf(i));
             status_tvs[0][i].setTypeface(status_tvs[0][i].getTypeface(), Typeface.BOLD);
-
         }
 
         for (int i = 1; i < rowSize; i++) {
@@ -83,9 +81,7 @@ public class SheetActivity extends AppCompatActivity {
                 rows[i].addView(status_tvs[i][j]);
             }
             tableLayout.addView(rows[i]);
-
         }
-
     }
 
     private int getDayInMonth(String month) {
