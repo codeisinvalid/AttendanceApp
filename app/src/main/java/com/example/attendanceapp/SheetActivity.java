@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class SheetActivity extends AppCompatActivity {
 
@@ -16,6 +19,11 @@ public class SheetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sheet);
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.white));
 
         showTable();
     }
@@ -28,7 +36,8 @@ public class SheetActivity extends AppCompatActivity {
         String[] nameArray = getIntent().getStringArrayExtra("nameArray");
         String month = getIntent().getStringExtra("month");
 
-        int DAY_IN_MONTH = getDayInMonth(month);
+        assert month != null;
+        int DAY_IN_MONTH = getDayInMonth(Objects.requireNonNull(month));
 
 //        row setup
         int rowSize = idArray.length+1;

@@ -12,6 +12,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -30,6 +32,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.white));
+
+
         dbHelper = new DbHelper(this);
 
         fab = findViewById(R.id.fab_main);
@@ -42,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         classAdapter = new ClassAdapter(this, classItems);
         recyclerView.setAdapter(classAdapter);
-        classAdapter.setOnItemClickListener(position -> getItemActivity(position));
+        classAdapter.setOnItemClickListener(this::getItemActivity);
 
         setToolbar();
     }
@@ -60,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void setToolbar() {
 
         toolbar = findViewById(R.id.toolbar);
@@ -88,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     private void showDialog(){
         MyDialog dialog = new MyDialog();
         dialog.show(getSupportFragmentManager(), MyDialog.CLASS_ADD_DIALOG);
-        dialog.setListener((className, subjectName)-> addClass(className, subjectName));
+        dialog.setListener(this::addClass);
 
     }
 
